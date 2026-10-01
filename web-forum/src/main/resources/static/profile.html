@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>笛卡尔的心跳 · DevCircle</title>
+<link rel="stylesheet" href="assets/css/design-system.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<a href="#main" class="skip-link">跳到主内容</a>
+
+<!-- 顶部导航 -->
+<header class="header">
+  <div class="header__inner">
+    <a href="index.html" class="logo" aria-label="DevCircle 首页">
+      <span class="logo__mark" aria-hidden="true">&lt;/&gt;</span>
+      <span class="logo__text">DevCircle</span>
+    </a>
+
+    <form class="search" role="search" action="post-search.html" method="get">
+      <label for="search-input" class="sr-only">搜索</label>
+      <svg class="search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+      </svg>
+      <input id="search-input" name="q" class="search__input" type="search" placeholder="搜索帖子、用户或 #标签#">
+    </form>
+
+    <div class="header__actions">
+      <a href="index.html" class="btn btn--primary btn--sm">发帖</a>
+      <a href="notification.html" class="btn btn--icon btn--ghost" aria-label="消息通知">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+        </svg>
+        <span class="badge-dot">12</span>
+      </a>
+      <a href="message.html" class="btn btn--icon btn--ghost" aria-label="私信">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </a>
+      <a href="profile.html" aria-label="我的主页"><span class="avatar avatar--sm" aria-hidden="true">笛</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- 左侧导航 -->
+  <nav class="layout__sidebar" aria-label="主导航">
+    <ul class="nav">
+      <li>
+        <a href="index.html" class="nav__item" data-label="首页">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>
+          </svg>
+          <span class="nav__label">首页</span>
+        </a>
+      </li>
+      <li>
+        <a href="discover.html" class="nav__item" data-label="发现">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2 6.3-6.4 2.1 2-6.3z"/>
+          </svg>
+          <span class="nav__label">发现</span>
+        </a>
+      </li>
+      <li>
+        <a href="hot.html" class="nav__item" data-label="热搜榜">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </svg>
+          <span class="nav__label">热搜榜</span>
+        </a>
+      </li>
+      <li>
+        <a href="message.html" class="nav__item" data-label="私信">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="nav__label">私信</span>
+          <span class="nav__count">2</span>
+        </a>
+      </li>
+      <li>
+        <a href="notification.html" class="nav__item" data-label="通知">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+          </svg>
+          <span class="nav__label">通知</span>
+          <span class="nav__count">12</span>
+        </a>
+      </li>
+      <li>
+        <a href="profile.html" class="nav__item nav__item--active" data-label="我的主页" aria-current="page">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="nav__label">我的主页</span>
+        </a>
+      </li>
+      <li>
+        <a href="bookmarks.html" class="nav__item" data-label="我的收藏">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="nav__label">我的收藏</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- 主内容 -->
+  <main class="layout__main" id="main">
+
+    <!-- ========== 个人资料卡 ========== -->
+    <section class="card" style="overflow:hidden; margin-bottom:var(--sp-4);">
+
+      <!-- 封面 -->
+      <div class="profile-cover" role="img" aria-label="个人主页封面"></div>
+
+      <div class="profile-head">
+        <!-- 头像 -->
+        <div class="profile-head__avatar" aria-hidden="true">笛</div>
+
+        <!-- 操作按钮 -->
+        <div class="profile-head__actions">
+          <button class="btn btn--ghost btn--sm" aria-label="分享主页">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>
+            </svg>
+          </button>
+          <a href="settings.html" class="btn btn--ghost btn--sm">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>
+            </svg>
+            编辑资料
+          </a>
+        </div>
+
+        <!-- 昵称与账号 -->
+        <h1 class="profile-head__name">
+          笛卡尔的心跳
+          <span class="chip chip--mono chip--brand" style="font-size:10px;">Yevora</span>
+        </h1>
+        <div class="profile-head__handle">@yevora</div>
+
+        <!-- 简介 -->
+        <p class="profile-head__bio">
+          Java 后端学习中，正在啃 JVM、并发和分布式。喜欢把踩坑记录写下来，也喜欢和同学讨论技术问题。
+        </p>
+
+        <!-- 技术方向标签 -->
+        <div class="tag-suggest" style="margin-top:var(--sp-3);">
+          <span class="chip chip--brand">后端开发</span>
+          <span class="chip">Java</span>
+          <span class="chip">Spring Boot</span>
+          <span class="chip">Redis</span>
+          <span class="chip">MySQL</span>
+        </div>
+
+        <!-- 数据统计 -->
+        <div class="profile-head__meta">
+          <span class="profile-head__meta-item">
+            <strong class="mono">46</strong> 关注
+          </span>
+          <span class="profile-head__meta-item">
+            <strong class="mono">128</strong> 粉丝
+          </span>
+          <span class="profile-head__meta-item">
+            <strong class="mono">37</strong> 帖子
+          </span>
+          <span class="profile-head__meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            <a href="#" class="mono">github.com/gaomeng523</a>
+          </span>
+          <span class="profile-head__meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+            </svg>
+            2026 年 3 月加入
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========== Tab ========== -->
+    <div class="tabs" role="tablist" aria-label="主页内容分类" style="border-radius:var(--r-lg) var(--r-lg) 0 0; border:1px solid var(--border-1); border-bottom:none;">
+      <button class="tab tab--active" role="tab" aria-selected="true">帖子</button>
+      <button class="tab" role="tab" aria-selected="false">评论</button>
+      <button class="tab" role="tab" aria-selected="false">点赞</button>
+      <button class="tab" role="tab" aria-selected="false">收藏</button>
+    </div>
+
+    <!-- ========== 帖子列表 ========== -->
+    <div>
+      <!-- 帖子 1 -->
+      <article class="post" style="border:1px solid var(--border-1); border-top:none; background:var(--bg-card);">
+        <div class="post__body">
+          <div class="post__head">
+            <span class="post__meta">
+              <time datetime="2026-09-30T21:30:00+08:00">今天 21:30</time>
+              <span class="post__meta-sep">·</span>
+              <span class="post__direction">Java 后端</span>
+            </span>
+            <button class="post__more" aria-label="更多操作">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="post__content" style="font-size:var(--fs-sm);">
+            终于把 JMM 的内存可见性彻底搞懂了。踩坑记录：<br>
+            volatile 只保证可见性和禁止指令重排，不保证原子性。想用它做自增计数器，照样会出错。
+          </div>
+
+          <div class="tag-suggest">
+            <a href="tag.html" class="tag-pill">#Java#</a>
+            <a href="tag.html" class="tag-pill">#并发编程#</a>
+            <a href="tag.html" class="tag-pill">#JMM#</a>
+          </div>
+
+          <div class="actions">
+            <button class="action action--like" data-count="42" aria-pressed="false" aria-label="赞">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+              </svg>
+              <span class="action__count">42</span>
+            </button>
+            <button class="action action--comment" aria-label="查看 8 条评论">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+              </svg>
+              <span class="action__count">8</span>
+            </button>
+            <button class="action action--repost" aria-label="转发">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+              </svg>
+              <span class="action__count">3</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 帖子 2 -->
+      <article class="post" style="border-left:1px solid var(--border-1); border-right:1px solid var(--border-1); background:var(--bg-card);">
+        <div class="post__body">
+          <div class="post__head">
+            <span class="post__meta">
+              <time datetime="2026-09-28T20:00:00+08:00">9月28日</time>
+              <span class="post__meta-sep">·</span>
+              <span class="post__direction">Redis</span>
+            </span>
+            <button class="post__more" aria-label="更多操作">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="post__content" style="font-size:var(--fs-sm);">
+            用 Redis 做点赞功能的完整方案整理：<br><br>
+            1. Set 存点赞用户，天然去重<br>
+            2. Lua 脚本保证「判重 + 计数」原子<br>
+            3. List 作缓冲队列，定时批量落库<br>
+            4. 空值缓存防穿透，SETNX 防击穿
+          </div>
+
+          <div class="tag-suggest">
+            <a href="tag.html" class="tag-pill">#Redis#</a>
+            <a href="tag.html" class="tag-pill">#高并发#</a>
+            <a href="tag.html" class="tag-pill">#缓存设计#</a>
+          </div>
+
+          <div class="actions">
+            <button class="action action--like" data-count="87" aria-pressed="false" aria-label="赞">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+              </svg>
+              <span class="action__count">87</span>
+            </button>
+            <button class="action action--comment" aria-label="查看 14 条评论">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+              </svg>
+              <span class="action__count">14</span>
+            </button>
+            <button class="action action--repost" aria-label="转发">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+              </svg>
+              <span class="action__count">9</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 帖子 3：带图 -->
+      <article class="post" style="border-left:1px solid var(--border-1); border-right:1px solid var(--border-1); background:var(--bg-card);">
+        <div class="post__body">
+          <div class="post__head">
+            <span class="post__meta">
+              <time datetime="2026-09-25T19:30:00+08:00">9月25日</time>
+              <span class="post__meta-sep">·</span>
+              <span class="post__direction">MySQL</span>
+            </span>
+            <button class="post__more" aria-label="更多操作">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="post__content" style="font-size:var(--fs-sm);">
+            画了张 B+ 树索引的查找过程图。核心结论：联合索引遵循最左前缀原则，所以 (a, b, c) 能加速 a、a+b、a+b+c 的查询，但加速不了 b 或 c 单独查询。
+          </div>
+
+          <div class="post__images">
+            <div class="post__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='340'%3E%3Crect fill='%23EEF2FF' width='600' height='340'/%3E%3Ctext x='300' y='170' font-family='monospace' font-size='26' fill='%234F46E5' text-anchor='middle' dominant-baseline='middle'%3EB%2BTree 索引%3C/text%3E%3C/svg%3E"
+                   alt="B+ 树索引查找过程示意图" loading="lazy" width="600" height="340">
+            </div>
+          </div>
+
+          <div class="tag-suggest">
+            <a href="tag.html" class="tag-pill">#MySQL#</a>
+            <a href="tag.html" class="tag-pill">#索引优化#</a>
+          </div>
+
+          <div class="actions">
+            <button class="action action--like action--active" data-count="203" aria-pressed="true" aria-label="取消赞">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+              </svg>
+              <span class="action__count">203</span>
+            </button>
+            <button class="action action--comment" aria-label="查看 31 条评论">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+              </svg>
+              <span class="action__count">31</span>
+            </button>
+            <button class="action action--repost" aria-label="转发">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+              </svg>
+              <span class="action__count">44</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 帖子 4 -->
+      <article class="post" style="border:1px solid var(--border-1); border-top:none; border-radius:0 0 var(--r-lg) var(--r-lg); background:var(--bg-card);">
+        <div class="post__body">
+          <div class="post__head">
+            <span class="post__meta">
+              <time datetime="2026-09-22T21:00:00+08:00">9月22日</time>
+              <span class="post__meta-sep">·</span>
+              <span class="post__direction">WebSocket</span>
+            </span>
+            <button class="post__more" aria-label="更多操作">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="post__content" style="font-size:var(--fs-sm);">
+            做实时消息踩的坑：消息一定要先落库再推送。<br>
+            一开始我先推再存，结果网络抖动时推送失败，消息就丢了。改成「先持久化，推送尽力而为，重连后补拉」之后才稳定。
+          </div>
+
+          <div class="tag-suggest">
+            <a href="tag.html" class="tag-pill">#WebSocket#</a>
+            <a href="tag.html" class="tag-pill">#实时通信#</a>
+          </div>
+
+          <div class="actions">
+            <button class="action action--like" data-count="156" aria-pressed="false" aria-label="赞">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+              </svg>
+              <span class="action__count">156</span>
+            </button>
+            <button class="action action--comment" aria-label="查看 22 条评论">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+              </svg>
+              <span class="action__count">22</span>
+            </button>
+            <button class="action action--repost" aria-label="转发">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+              </svg>
+              <span class="action__count">28</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- 加载更多 -->
+    <div class="load-more">
+      <button class="load-more__btn" type="button">加载更多帖子</button>
+    </div>
+
+  </main>
+
+  <!-- 右侧栏 -->
+  <aside class="layout__aside" aria-label="相关信息">
+
+    <!-- 活跃标签 -->
+    <section class="aside-card">
+      <div class="aside-card__head">
+        <h2 class="aside-card__title">常用标签</h2>
+      </div>
+      <div class="aside-card__body" style="padding:var(--sp-3) var(--sp-4);">
+        <div class="tag-suggest" style="margin:0;">
+          <a href="tag.html" class="tag-pill">#Java# <span class="mono" style="opacity:.6">18</span></a>
+          <a href="tag.html" class="tag-pill">#Redis# <span class="mono" style="opacity:.6">7</span></a>
+          <a href="tag.html" class="tag-pill">#MySQL# <span class="mono" style="opacity:.6">5</span></a>
+          <a href="tag.html" class="tag-pill">#并发编程# <span class="mono" style="opacity:.6">4</span></a>
+          <a href="tag.html" class="tag-pill">#WebSocket# <span class="mono" style="opacity:.6">3</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 关注的人 -->
+    <section class="aside-card">
+      <div class="aside-card__head">
+        <h2 class="aside-card__title">我关注的人</h2>
+        <a href="#" class="text-xs">全部</a>
+      </div>
+      <div class="aside-card__body">
+        <a href="profile.html" class="suggest">
+          <span class="avatar avatar--sm" aria-hidden="true" style="background:#FFE4E6; color:#BE123C;">红</span>
+          <span class="suggest__body">
+            <span class="suggest__name">红姐的技术笔记</span>
+          </span>
+        </a>
+        <a href="profile.html" class="suggest">
+          <span class="avatar avatar--sm" aria-hidden="true" style="background:#F5F0E6; color:#854D0E;">R</span>
+          <span class="suggest__body">
+            <span class="suggest__name">Redis 玩家</span>
+          </span>
+        </a>
+        <a href="profile.html" class="suggest">
+          <span class="avatar avatar--sm" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">架</span>
+          <span class="suggest__body">
+            <span class="suggest__name">架构师老王</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 成就 -->
+    <section class="aside-card">
+      <div class="aside-card__head">
+        <h2 class="aside-card__title">成就</h2>
+      </div>
+      <div class="aside-card__body" style="padding:var(--sp-3) var(--sp-4);">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:36px; height:36px; border-radius:var(--r-md); background:var(--warning-bg); display:grid; place-items:center; color:var(--warning); flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+            </svg>
+          </span>
+          <span class="flex-1">
+            <span class="block text-sm" style="font-weight:600;">技术热门创作者</span>
+            <span class="block text-xs text-muted">单篇帖子点赞破 500</span>
+          </span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span style="width:36px; height:36px; border-radius:var(--r-md); background:var(--brand-50); display:grid; place-items:center; color:var(--brand-600); flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M12 2 9.5 4.5 6 4l-.5 3.5L2 9l1.5 3L2 15l3.5 1.5L6 20l3.5-.5L12 22l2.5-2.5L18 20l.5-3.5L22 15l-1.5-3L22 9l-3.5-1.5L18 4l-3.5.5z"/>
+            </svg>
+          </span>
+          <span class="flex-1">
+            <span class="block text-sm" style="font-weight:600;">连续分享 30 天</span>
+            <span class="block text-xs text-muted">2026 年 8 月达成</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </aside>
+
+</div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>

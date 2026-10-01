@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JMM 内存可见性踩坑记录 · DevCircle</title>
+<link rel="stylesheet" href="assets/css/design-system.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<a href="#main" class="skip-link">跳到主内容</a>
+
+<!-- ============================================================
+     顶部导航
+     ============================================================ -->
+<header class="header">
+  <div class="header__inner">
+
+    <a href="index.html" class="logo" aria-label="DevCircle 首页">
+      <span class="logo__mark" aria-hidden="true">&lt;/&gt;</span>
+      <span class="logo__text">DevCircle</span>
+    </a>
+
+    <form class="search" role="search" action="post-search.html" method="get">
+      <label for="search-input" class="sr-only">搜索帖子、用户或标签</label>
+      <svg class="search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+      </svg>
+      <input id="search-input" name="q" class="search__input" type="search" placeholder="搜索帖子、用户或 #标签#">
+    </form>
+
+    <div class="header__actions">
+      <a href="index.html" class="btn btn--primary btn--sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        发帖
+      </a>
+      <a href="notification.html" class="btn btn--icon btn--ghost" aria-label="消息通知">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+        </svg>
+        <span class="badge-dot" aria-label="12 条未读通知">12</span>
+      </a>
+      <a href="message.html" class="btn btn--icon btn--ghost" aria-label="私信">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </a>
+      <a href="profile.html" aria-label="我的主页">
+        <span class="avatar avatar--sm" aria-hidden="true">笛</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ---------- 左侧导航 ---------- -->
+  <nav class="layout__sidebar" aria-label="主导航">
+    <ul class="nav">
+      <li>
+        <a href="index.html" class="nav__item" data-label="首页">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>
+          </svg>
+          <span class="nav__label">首页</span>
+        </a>
+      </li>
+      <li>
+        <a href="discover.html" class="nav__item" data-label="发现">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2 6.3-6.4 2.1 2-6.3z"/>
+          </svg>
+          <span class="nav__label">发现</span>
+        </a>
+      </li>
+      <li>
+        <a href="hot.html" class="nav__item" data-label="热搜榜">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </svg>
+          <span class="nav__label">热搜榜</span>
+        </a>
+      </li>
+      <li>
+        <a href="message.html" class="nav__item" data-label="私信">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="nav__label">私信</span>
+        </a>
+      </li>
+      <li>
+        <a href="notification.html" class="nav__item" data-label="通知">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+          </svg>
+          <span class="nav__label">通知</span>
+        </a>
+      </li>
+      <li>
+        <a href="profile.html" class="nav__item" data-label="我的主页">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="nav__label">我的主页</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ---------- 主内容 ---------- -->
+  <main class="layout__main" id="main">
+
+    <!-- 返回 -->
+    <a href="index.html" class="btn btn--ghost btn--sm mb-3" style="border:none; padding-left:0;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+      返回信息流
+    </a>
+
+    <!-- ========== 帖子主体 ========== -->
+    <article class="card" style="overflow:hidden; margin-bottom:var(--sp-4);">
+
+      <div style="padding:var(--sp-4) var(--sp-4) 0;">
+        <!-- 作者信息 -->
+        <div class="flex items-center gap-3 mb-3">
+          <a href="profile.html">
+            <span class="avatar avatar--lg" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>
+          </a>
+          <div class="flex-1">
+            <a href="profile.html" class="post__author" style="font-size:var(--fs-base);">
+              小明
+              <svg class="post__verified" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-label="认证用户" role="img">
+                <path d="M12 2 9.5 4.5 6 4l-.5 3.5L2 9l1.5 3L2 15l3.5 1.5L6 20l3.5-.5L12 22l2.5-2.5L18 20l.5-3.5L22 15l-1.5-3L22 9l-3.5-1.5L18 4l-3.5.5zm-1.2 13.2L7 11.4l1.4-1.4 2.4 2.4 5-5L17.2 9z"/>
+              </svg>
+            </a>
+            <div class="post__meta" style="margin-top:2px;">
+              <span class="post__direction">Java 后端</span>
+              <span class="post__meta-sep">·</span>
+              <time datetime="2026-09-30T21:30:00+08:00">2026年9月30日 21:30</time>
+            </div>
+          </div>
+          <button class="btn btn--ghost btn--sm" aria-label="更多操作">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- 正文 -->
+        <div class="post__content" style="font-size:var(--fs-lg); line-height:1.75;">
+          终于把 JMM 的内存可见性彻底搞懂了。踩坑记录：<br><br>
+          volatile 只保证可见性和禁止指令重排，不保证原子性。想用它做自增计数器，照样会出错。
+        </div>
+
+        <!-- 标签 -->
+        <div class="tag-suggest" style="margin-top:var(--sp-3);">
+          <a href="tag.html" class="tag-pill">#Java#</a>
+          <a href="tag.html" class="tag-pill">#并发编程#</a>
+          <a href="tag.html" class="tag-pill">#JMM#</a>
+        </div>
+
+        <!-- 统计 -->
+        <div class="flex gap-4 text-xs text-muted mt-3" style="font-family:var(--font-mono);">
+          <span>1024 次浏览</span>
+          <span>2026-09-30 21:30</span>
+        </div>
+      </div>
+
+      <!-- 互动条（详情页放大） -->
+      <div class="actions" style="padding:var(--sp-3) var(--sp-4); margin:0; border-top:1px solid var(--border-1); margin-top:var(--sp-4); gap:var(--sp-4);">
+        <button class="action action--like" data-count="42" aria-pressed="false" aria-label="赞" style="height:36px; padding:0 var(--sp-3);">
+          <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+          </svg>
+          <span class="action__count">42</span>
+        </button>
+
+        <button class="action action--comment" aria-label="查看 8 条评论" style="height:36px; padding:0 var(--sp-3);">
+          <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+          </svg>
+          <span class="action__count">8</span>
+        </button>
+
+        <button class="action action--repost" aria-label="转发" style="height:36px; padding:0 var(--sp-3);">
+          <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+          </svg>
+          <span class="action__count">3</span>
+        </button>
+
+        <button class="action" aria-label="收藏" style="height:36px; padding:0 var(--sp-3); margin-left:auto;">
+          <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="action__count">收藏</span>
+        </button>
+      </div>
+    </article>
+
+    <!-- ========== 评论输入框 ========== -->
+    <section class="card" style="padding:var(--sp-4); margin-bottom:var(--sp-4);" aria-label="发表评论">
+      <div class="flex gap-3">
+        <span class="avatar avatar--md" aria-hidden="true">笛</span>
+        <div class="flex-1">
+          <label for="comment-input" class="sr-only">写下你的评论</label>
+          <textarea id="comment-input" class="input" rows="2"
+                    placeholder="写下你的想法..."
+                    style="min-height:60px; resize:vertical; line-height:1.6;"></textarea>
+          <div class="flex items-center justify-between mt-3">
+            <span class="text-xs text-muted" style="font-family:var(--font-mono);">0 / 200</span>
+            <button class="btn btn--primary btn--sm" disabled>发表评论</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 评论区 ========== -->
+    <section class="card" style="overflow:hidden;" aria-label="评论区">
+      <div class="card__header">
+        <h2 class="card__title">
+          全部评论
+          <span class="chip chip--mono chip--brand">8</span>
+        </h2>
+        <div class="flex gap-2">
+          <button class="btn btn--ghost btn--sm" style="border:none;">最新</button>
+          <button class="btn btn--ghost btn--sm" style="border:none;">最热</button>
+        </div>
+      </div>
+
+      <!-- ---------- 一级评论 1（带二级回复） ---------- -->
+      <article class="comment">
+        <span class="avatar avatar--sm" aria-hidden="true" style="background:#FFE4E6; color:#BE123C;">红</span>
+        <div class="comment__body">
+          <div class="comment__head">
+            <a href="profile.html" class="comment__author">红姐的技术笔记</a>
+            <time class="comment__time" datetime="2026-09-30T21:45:00+08:00">27 分钟前</time>
+          </div>
+
+          <div class="comment__content">
+            补充一点：volatile 的可见性是通过内存屏障（Memory Barrier）实现的。<br>
+            写 volatile 变量时插入 StoreLoad 屏障，强制把写缓冲刷回主内存。
+          </div>
+
+          <div class="comment__actions">
+            <button class="comment__action comment__action--like">♥ 12</button>
+            <button class="comment__action">回复</button>
+          </div>
+
+          <!-- 二级回复（缩进一层，不再嵌套） -->
+          <div class="replies">
+            <div class="reply">
+              <span class="avatar avatar--xs" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>
+              <div class="flex-1">
+                <div class="reply__content">
+                  <a href="profile.html" class="comment__author" style="font-size:var(--fs-sm);">小明</a>
+                  <span class="comment__reply-to">回复 @红姐的技术笔记：</span>
+                  对，而且读的时候会插入 LoadLoad 屏障，保证后面的读不会被重排到前面。
+                </div>
+                <div class="reply__meta">
+                  <time datetime="2026-09-30T21:50:00+08:00">22 分钟前</time>
+                  <button class="comment__action">回复</button>
+                  <button class="comment__action comment__action--like">♥ 3</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="reply">
+              <span class="avatar avatar--xs" aria-hidden="true" style="background:#FEF9C3; color:#A16207;">J</span>
+              <div class="flex-1">
+                <div class="reply__content">
+                  <a href="profile.html" class="comment__author" style="font-size:var(--fs-sm);">JVM 调优笔记</a>
+                  <span class="comment__reply-to">回复 @小明：</span>
+                  所以 volatile 变量的读写比普通变量慢，因为屏障会限制 CPU 的乱序执行优化。
+                </div>
+                <div class="reply__meta">
+                  <time datetime="2026-09-30T21:55:00+08:00">17 分钟前</time>
+                  <button class="comment__action">回复</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="reply">
+              <span class="avatar avatar--xs" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">阿</span>
+              <div class="flex-1">
+                <div class="reply__content">
+                  <a href="profile.html" class="comment__author" style="font-size:var(--fs-sm);">阿杰</a>
+                  <span class="comment__reply-to">回复 @红姐的技术笔记：</span>
+                  受教了，之前只知道有这个结论，不知道底层机制。
+                </div>
+                <div class="reply__meta">
+                  <time datetime="2026-09-30T22:00:00+08:00">12 分钟前</time>
+                  <button class="comment__action">回复</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 更多回复 -->
+            <button class="replies__more">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+              查看全部 5 条回复
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------- 一级评论 2 ---------- -->
+      <article class="comment">
+        <span class="avatar avatar--sm" aria-hidden="true" style="background:#F5F0E6; color:#854D0E;">R</span>
+        <div class="comment__body">
+          <div class="comment__head">
+            <a href="profile.html" class="comment__author">Redis 玩家</a>
+            <time class="comment__time" datetime="2026-09-30T21:38:00+08:00">34 分钟前</time>
+          </div>
+
+          <div class="comment__content">
+            想要原子性的话，可以用 synchronized、AtomicInteger 或者 LongAdder。<br>
+            高并发场景下 LongAdder 比 AtomicInteger 性能更好，因为它用了分段累加的思想。
+          </div>
+
+          <div class="comment__actions">
+            <button class="comment__action comment__action--like">♥ 18</button>
+            <button class="comment__action">回复</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------- 一级评论 3 ---------- -->
+      <article class="comment">
+        <span class="avatar avatar--sm" aria-hidden="true" style="background:#FFEDD5; color:#C2410C;">阿</span>
+        <div class="comment__body">
+          <div class="comment__head">
+            <a href="profile.html" class="comment__author">阿杰</a>
+            <time class="comment__time" datetime="2026-09-30T21:32:00+08:00">40 分钟前</time>
+          </div>
+
+          <div class="comment__content">
+            我面试被问到过这题，当时只答了"保证可见性不保证原子性"，面试官追问"那为什么不保证原子性"，我答不上来 😅<br>
+            后来才明白 self++ 是复合操作：读-改-写三步，中间任何一步都可能被打断。
+          </div>
+
+          <div class="comment__actions">
+            <button class="comment__action comment__action--like">♥ 6</button>
+            <button class="comment__action">回复</button>
+          </div>
+
+          <div class="replies">
+            <div class="reply">
+              <span class="avatar avatar--xs" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>
+              <div class="flex-1">
+                <div class="reply__content">
+                  <a href="profile.html" class="comment__author" style="font-size:var(--fs-sm);">小明</a>
+                  <span class="comment__reply-to">回复 @阿杰：</span>
+                  没错，这也是经典的面试考点。可以用 volatile 的字节码看，就是普通的 putfield / getfield。
+                </div>
+                <div class="reply__meta">
+                  <time datetime="2026-09-30T21:35:00+08:00">37 分钟前</time>
+                  <button class="comment__action">回复</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------- 一级评论 4 ---------- -->
+      <article class="comment">
+        <span class="avatar avatar--sm" aria-hidden="true" style="background:#FEF9C3; color:#A16207;">算</span>
+        <div class="comment__body">
+          <div class="comment__head">
+            <a href="profile.html" class="comment__author">算法小王子</a>
+            <time class="comment__time" datetime="2026-09-30T21:31:00+08:00">41 分钟前</time>
+          </div>
+          <div class="comment__content">写得清楚，收藏了。之前一直混淆 JMM 和 JVM 内存结构，这下分清了。</div>
+          <div class="comment__actions">
+            <button class="comment__action comment__action--like">♥ 9</button>
+            <button class="comment__action">回复</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 加载更多评论 -->
+      <div class="load-more">
+        <button class="load-more__btn" type="button">
+          加载更多评论
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ---------- 右侧栏 ---------- -->
+  <aside class="layout__aside" aria-label="作者信息">
+
+    <!-- 作者卡片 -->
+    <section class="aside-card">
+      <div class="aside-card__body" style="padding:var(--sp-4);">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="avatar avatar--lg" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>
+          <div class="flex-1">
+            <a href="profile.html" style="font-size:var(--fs-base); font-weight:var(--fw-semibold); color:var(--text-1); display:block;">
+              小明
+            </a>
+            <div class="text-xs text-muted mono">@xiaoming</div>
+          </div>
+        </div>
+
+        <p class="text-sm" style="color:var(--text-2); line-height:1.6; margin-bottom:var(--sp-4);">
+          Java 后端学习中，关注 JVM、并发与分布式。
+        </p>
+
+        <div class="flex gap-4 text-sm mb-4">
+          <span><strong class="mono" style="color:var(--text-1);">46</strong> <span class="text-muted">关注</span></span>
+          <span><strong class="mono" style="color:var(--text-1);">128</strong> <span class="text-muted">粉丝</span></span>
+          <span><strong class="mono" style="color:var(--text-1);">37</strong> <span class="text-muted">帖子</span></span>
+        </div>
+
+        <div class="flex gap-2">
+          <button class="btn btn--primary btn--sm flex-1" data-follow="0">关注</button>
+          <a href="message.html" class="btn btn--ghost btn--sm flex-1">私信</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 相关帖子 -->
+    <section class="aside-card">
+      <div class="aside-card__head">
+        <h2 class="aside-card__title">相关阅读</h2>
+      </div>
+      <div class="aside-card__body">
+        <a href="post-detail.html" class="suggest" style="padding:var(--sp-3) var(--sp-4);">
+          <span class="suggest__body">
+            <span class="suggest__name">synchronized 的锁升级过程</span>
+            <span class="suggest__bio">偏向锁 → 轻量级锁 → 重量级锁</span>
+          </span>
+        </a>
+        <a href="post-detail.html" class="suggest" style="padding:var(--sp-3) var(--sp-4);">
+          <span class="suggest__body">
+            <span class="suggest__name">AQS 原理与 ReentrantLock</span>
+            <span class="suggest__bio">手写一个简易版同步器</span>
+          </span>
+        </a>
+        <a href="post-detail.html" class="suggest" style="padding:var(--sp-3) var(--sp-4);">
+          <span class="suggest__body">
+            <span class="suggest__name">线程池参数到底怎么设</span>
+            <span class="suggest__bio">CPU 密集型 vs IO 密集型</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+  </aside>
+
+</div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>

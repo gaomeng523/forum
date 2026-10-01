@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>通知 · DevCircle</title>
+<link rel="stylesheet" href="assets/css/design-system.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<a href="#main" class="skip-link">跳到主内容</a>
+
+<!-- 顶部导航 -->
+<header class="header">
+  <div class="header__inner">
+    <a href="index.html" class="logo" aria-label="DevCircle 首页">
+      <span class="logo__mark" aria-hidden="true">&lt;/&gt;</span>
+      <span class="logo__text">DevCircle</span>
+    </a>
+
+    <form class="search" role="search" action="post-search.html" method="get">
+      <label for="search-input" class="sr-only">搜索</label>
+      <svg class="search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+      </svg>
+      <input id="search-input" name="q" class="search__input" type="search" placeholder="搜索帖子、用户或 #标签#">
+    </form>
+
+    <div class="header__actions">
+      <a href="index.html" class="btn btn--primary btn--sm">发帖</a>
+      <a href="message.html" class="btn btn--icon btn--ghost" aria-label="私信">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </a>
+      <a href="profile.html" aria-label="我的主页"><span class="avatar avatar--sm" aria-hidden="true">笛</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- 左侧导航 -->
+  <nav class="layout__sidebar" aria-label="主导航">
+    <ul class="nav">
+      <li>
+        <a href="index.html" class="nav__item" data-label="首页">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>
+          </svg>
+          <span class="nav__label">首页</span>
+        </a>
+      </li>
+      <li>
+        <a href="discover.html" class="nav__item" data-label="发现">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2 6.3-6.4 2.1 2-6.3z"/>
+          </svg>
+          <span class="nav__label">发现</span>
+        </a>
+      </li>
+      <li>
+        <a href="hot.html" class="nav__item" data-label="热搜榜">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </svg>
+          <span class="nav__label">热搜榜</span>
+        </a>
+      </li>
+      <li>
+        <a href="message.html" class="nav__item" data-label="私信">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="nav__label">私信</span>
+          <span class="nav__count">2</span>
+        </a>
+      </li>
+      <li>
+        <a href="notification.html" class="nav__item nav__item--active" data-label="通知" aria-current="page">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+          </svg>
+          <span class="nav__label">通知</span>
+          <span class="nav__count">12</span>
+        </a>
+      </li>
+      <li>
+        <a href="profile.html" class="nav__item" data-label="我的主页">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="nav__label">我的主页</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- 主内容 -->
+  <main class="layout__main" id="main">
+
+    <div class="flex items-center justify-between mb-3">
+      <h1 style="font-size:var(--fs-xl); font-weight:var(--fw-bold);">通知</h1>
+      <button id="mark-all-read" class="btn btn--ghost btn--sm">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        全部标记已读
+      </button>
+    </div>
+
+    <!-- 未读数汇总卡片 -->
+    <section class="card mb-4" style="padding:var(--sp-4);" aria-label="未读通知统计">
+      <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:var(--sp-3); text-align:center;">
+        <div>
+          <div class="mono" style="font-size:var(--fs-xl); font-weight:var(--fw-bold); color:var(--like);">5</div>
+          <div class="text-xs text-muted mt-2">点赞</div>
+        </div>
+        <div>
+          <div class="mono" style="font-size:var(--fs-xl); font-weight:var(--fw-bold); color:var(--info);">4</div>
+          <div class="text-xs text-muted mt-2">评论</div>
+        </div>
+        <div>
+          <div class="mono" style="font-size:var(--fs-xl); font-weight:var(--fw-bold); color:var(--brand-600);">2</div>
+          <div class="text-xs text-muted mt-2">关注</div>
+        </div>
+        <div>
+          <div class="mono" style="font-size:var(--fs-xl); font-weight:var(--fw-bold); color:var(--warning);">1</div>
+          <div class="text-xs text-muted mt-2">@我</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab -->
+    <div class="tabs" role="tablist" aria-label="通知分类" style="border-radius:var(--r-lg) var(--r-lg) 0 0; border:1px solid var(--border-1); border-bottom:none;">
+      <button class="tab tab--active" role="tab" aria-selected="true">全部</button>
+      <button class="tab" role="tab" aria-selected="false">点赞</button>
+      <button class="tab" role="tab" aria-selected="false">评论</button>
+      <button class="tab" role="tab" aria-selected="false">关注</button>
+      <button class="tab" role="tab" aria-selected="false">@我</button>
+    </div>
+
+    <!-- 通知列表 -->
+    <div style="background:var(--bg-card); border:1px solid var(--border-1); border-top:none; border-radius:0 0 var(--r-lg) var(--r-lg); overflow:hidden;">
+
+      <!-- 点赞通知（未读） -->
+      <a href="post-detail.html" class="notify notify--unread">
+        <span class="notify__icon notify__icon--like" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+          </svg>
+          <span class="notify__avatar">
+            <span class="avatar avatar--xs" style="width:100%; height:100%; background:#FFE4E6; color:#BE123C; font-size:9px;">红</span>
+          </span>
+        </span>
+        <span class="notify__body">
+          <span class="notify__text">
+            <span class="notify__name">红姐的技术笔记</span> 赞了你的帖子
+          </span>
+          <span class="notify__preview">终于把 JMM 的内存可见性彻底搞懂了。踩坑记录：volatile 只保证可见性和禁止指令重排...</span>
+          <span class="notify__time">3 分钟前</span>
+        </span>
+      </a>
+
+      <!-- 评论通知（未读） -->
+      <a href="post-detail.html" class="notify notify--unread">
+        <span class="notify__icon notify__icon--comment" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+          </svg>
+          <span class="notify__avatar">
+            <span class="avatar avatar--xs" style="width:100%; height:100%; background:#FEF3C7; color:#B45309; font-size:9px;">小</span>
+          </span>
+        </span>
+        <span class="notify__body">
+          <span class="notify__text">
+            <span class="notify__name">小明</span> 评论了你的帖子
+          </span>
+          <span class="notify__preview">想请教一个问题：volatile 修饰数组的时候，数组元素的可见性是怎么保证的？</span>
+          <span class="notify__time">27 分钟前</span>
+        </span>
+      </a>
+
+      <!-- 关注通知（未读） -->
+      <a href="profile.html" class="notify notify--unread">
+        <span class="notify__icon notify__icon--follow" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>
+          </svg>
+          <span class="notify__avatar">
+            <span class="avatar avatar--xs" style="width:100%; height:100%; background:#F5F0E6; color:#854D0E; font-size:9px;">R</span>
+          </span>
+        </span>
+        <span class="notify__body">
+          <span class="notify__text">
+            <span class="notify__name">Redis 玩家</span> 关注了你
+          </span>
+          <span class="notify__time">1 小时前</span>
+        </span>
+      </a>
+
+      <!-- @提及通知（未读） -->
+      <a href="post-detail.html" class="notify notify--unread">
+        <span class="notify__icon notify__icon--mention" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/>
+          </svg>
+          <span class="notify__avatar">
+            <span class="avatar avatar--xs" style="width:100%; height:100%; background:#FFEDD5; color:#C2410C; font-size:9px;">阿</span>
+          </span>
+        </span>
+        <span class="notify__body">
+          <span class="notify__text">
+            <span class="notify__name">阿杰</span> 在帖子中提到了你
+          </span>
+          <span class="notify__preview">@笛卡尔的心跳 你之前写的那篇 JMM 分析太到位了，我直接引用一下</span>
+          <span class="notify__time">2 小时前</span>
+        </span>
+      </a>
+
+      <!-- 点赞通知（未读） -->
+      <a href="post-detail.html" class="notify notify--unread">
+        <span class="notify__icon notify__icon--like" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+          </svg>
+          <span class="notify__avatar">
+            <span class="avatar avatar--xs" style="width:100%; height:100%; background:#FEF9C3; color:#A16207; font-size:9px;">J</span>
+          </span>
+        </span>
+        <span class="notify__body">
+          <span class="notify__text">
+            <span class="notify__name">JVM 调优笔记</span> 和其他 3 人赞了你的帖子
+          </span>
+          <span class="notify__preview">今天把 JMM 的内存可见性彻底搞懂了</span>
+          <span class="notify__time">3 小时前</span>
+        </span>
+      </a>
+
+      <!-- 已读通知 -->
+      <a href="post-detail.html" class="notify">
+        <span class="notify__icon notify__icon--comment" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+          </svg>
+          <span class="notify__avatar">
+            <span class="avatar avatar--xs" style="width:100%; height:100%; background:#FEF9C3; color:#A16207; font-size:9px;">算</span>
+          </span>
+        </span>
+        <span class="notify__body">
+          <span class="notify__text">
+            <span class="notify__name">算法小王子</span> 评论了你的帖子
+          </span>
+          <span class="notify__preview">写得清楚，收藏了。之前一直混淆 JMM 和 JVM 内存结构，这下分清了。</span>
+          <span class="notify__time">昨天 21:31</span>
+        </span>
+      </a>
+
+      <a href="profile.html" class="notify">
+        <span class="notify__icon notify__icon--follow" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>
+          </svg>
+          <span class="notify__avatar">
+            <span class="avatar avatar--xs" style="width:100%; height:100%; background:#FEF3C7; color:#B45309; font-size:9px;">架</span>
+          </span>
+        </span>
+        <span class="notify__body">
+          <span class="notify__text">
+            <span class="notify__name">架构师老王</span> 关注了你
+          </span>
+          <span class="notify__time">昨天 09:15</span>
+        </span>
+      </a>
+
+      <a href="post-detail.html" class="notify">
+        <span class="notify__icon notify__icon--like" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+          </svg>
+          <span class="notify__avatar">
+            <span class="avatar avatar--xs" style="width:100%; height:100%; background:#FFE4E6; color:#BE123C; font-size:9px;">红</span>
+          </span>
+        </span>
+        <span class="notify__body">
+          <span class="notify__text">
+            <span class="notify__name">红姐的技术笔记</span> 赞了你的评论
+          </span>
+          <span class="notify__preview">对，而且读的时候会插入 LoadLoad 屏障，保证后面的读不会被重排到前面。</span>
+          <span class="notify__time">9月29日 22:10</span>
+        </span>
+      </a>
+
+    </div>
+
+    <!-- 加载更多 -->
+    <div class="load-more">
+      <button class="load-more__btn" type="button">加载更早的通知</button>
+    </div>
+
+  </main>
+
+  <!-- 右侧栏 -->
+  <aside class="layout__aside" aria-label="通知设置">
+    <section class="aside-card">
+      <div class="aside-card__head">
+        <h2 class="aside-card__title">通知偏好</h2>
+      </div>
+      <div class="aside-card__body" style="padding:var(--sp-3) var(--sp-4);">
+        <label class="flex items-center justify-between mb-3" style="cursor:pointer;">
+          <span class="text-sm">点赞通知</span>
+          <input type="checkbox" checked style="width:16px; height:16px; accent-color:var(--brand-600);">
+        </label>
+        <label class="flex items-center justify-between mb-3" style="cursor:pointer;">
+          <span class="text-sm">评论通知</span>
+          <input type="checkbox" checked style="width:16px; height:16px; accent-color:var(--brand-600);">
+        </label>
+        <label class="flex items-center justify-between mb-3" style="cursor:pointer;">
+          <span class="text-sm">关注通知</span>
+          <input type="checkbox" checked style="width:16px; height:16px; accent-color:var(--brand-600);">
+        </label>
+        <label class="flex items-center justify-between" style="cursor:pointer;">
+          <span class="text-sm">@提及通知</span>
+          <input type="checkbox" checked style="width:16px; height:16px; accent-color:var(--brand-600);">
+        </label>
+      </div>
+    </section>
+  </aside>
+
+</div>
+
+<script src="assets/js/app.js"></script>
+<script>
+/* 全部标记已读 */
+(function () {
+  const btn = document.getElementById('mark-all-read');
+  if (!btn) return;
+
+  btn.addEventListener('click', async function () {
+    btn.disabled = true;
+    try {
+      // 接入后端时替换为 PUT /api/v1/notifications/read  body: { all: true }
+      await new Promise(function (r) { setTimeout(r, 400); });
+
+      document.querySelectorAll('.notify--unread').forEach(function (el) {
+        el.classList.remove('notify--unread');
+      });
+
+      // 清空 Header 与侧栏的红点
+      DevCircle.updateUnreadBadge(0);
+      document.querySelectorAll('.nav__count').forEach(function (el) {
+        if (el.previousElementSibling &&
+            el.previousElementSibling.textContent.trim() === '通知') {
+          el.remove();
+        }
+      });
+
+      DevCircle.toast('已全部标记为已读', 'success');
+    } catch (err) {
+      DevCircle.toast('操作失败，请重试', 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

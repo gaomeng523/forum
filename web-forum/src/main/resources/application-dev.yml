@@ -1,0 +1,60 @@
+# ============================================================
+# 开发环境配置（spring.profiles.active=dev）
+# ------------------------------------------------------------
+# 本机实况（2026-10-01 实测）：
+#   · MySQL 5.7.27  →  127.0.0.1:3306   （服务名 MySQL57，本项目使用）
+#   · MySQL 8.0.46  →  127.0.0.1:3307   （服务名 MySQL80_D，本项目不用）
+#   · Redis         →  127.0.0.1:6379   （服务名 Redis）
+#
+# 目标库是 5.7 而不是 8.0，DDL 也按 5.7 写。
+# 取舍依据见《数据库设计说明书》1.1「目标数据库版本与兼容性取舍」。
+# ============================================================
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/dev_circle?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    username: root
+    password: 118523
+    hikari:
+      pool-name: DevCircleHikariPool
+      # 本地开发用不了那么多连接，最小值给 2 就够，起步快
+      minimum-idle: 2
+      maximum-pool-size: 10
+      idle-timeout: 300000          # 5 分钟
+      # 必须小于 MySQL 的 wait_timeout（默认 28800 秒），否则会拿到已被服务端关闭的死连接
+      max-lifetime: 1800000         # 30 分钟
+      connection-timeout: 10000     # 从池里拿不到连接时的等待上限
+      connection-test-query: SELECT 1
+
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 0
+      # 本地 Redis（Windows 版）默认没设密码
+      password: ${REDIS_PASSWORD:}
+      timeout: 3000ms
+      lettuce:
+        pool:
+          # 没有连接池的话，高并发下会反复建连，点赞接口的 P95 直接崩
+          max-active: 20
+          max-idle: 10
+          min-idle: 2
+          max-wait: 3000ms
+  thymeleaf:
+    # 开发期必须关缓存，否则改完 HTML 要重启才生效
+    cache: false
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    root: info
+    com.devcircle: debug
+    org.springframework.web: info
+    com.baomidou.mybatisplus: debug
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"

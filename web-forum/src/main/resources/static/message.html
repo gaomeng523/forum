@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>私信 · DevCircle</title>
+<link rel="stylesheet" href="assets/css/design-system.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* 私信页专用：双栏布局（会话列表 + 对话窗口） */
+  .chat-layout {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--sp-4);
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: var(--sp-4);
+    height: calc(100vh - var(--header-h));
+  }
+
+  .chat-list {
+    background: var(--bg-card);
+    border: 1px solid var(--border-1);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-list__head {
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--border-1);
+    flex-shrink: 0;
+  }
+
+  .chat-list__title {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    color: var(--text-1);
+    margin-bottom: var(--sp-3);
+  }
+
+  .chat-list__search {
+    width: 100%;
+    height: 36px;
+    padding: 0 var(--sp-3);
+    border: 1px solid var(--border-1);
+    border-radius: var(--r-full);
+    background: var(--bg-sunken);
+    font-size: var(--fs-sm);
+  }
+
+  .chat-list__search:focus {
+    outline: none;
+    background: var(--bg-card);
+    border-color: var(--brand-400);
+    box-shadow: var(--shadow-focus);
+  }
+
+  .chat-list__body {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* 移动端：单栏切换 */
+  @media (max-width: 991px) {
+    .chat-layout {
+      grid-template-columns: 1fr;
+      padding: var(--sp-3);
+      height: calc(100vh - var(--header-h) - 56px);
+      padding-bottom: calc(56px + var(--sp-3));
+    }
+
+    .chat-list { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#chat-body" class="skip-link">跳到消息内容</a>
+
+<!-- ============================================================
+     顶部导航
+     ============================================================ -->
+<header class="header">
+  <div class="header__inner">
+    <a href="index.html" class="logo" aria-label="DevCircle 首页">
+      <span class="logo__mark" aria-hidden="true">&lt;/&gt;</span>
+      <span class="logo__text">DevCircle</span>
+    </a>
+
+    <form class="search" role="search" action="post-search.html" method="get">
+      <label for="search-input" class="sr-only">搜索</label>
+      <svg class="search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+      </svg>
+      <input id="search-input" name="q" class="search__input" type="search" placeholder="搜索帖子、用户或 #标签#">
+    </form>
+
+    <div class="header__actions">
+      <a href="index.html" class="btn btn--primary btn--sm">发帖</a>
+      <a href="notification.html" class="btn btn--icon btn--ghost" aria-label="消息通知">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+        </svg>
+        <span class="badge-dot">12</span>
+      </a>
+      <a href="profile.html" aria-label="我的主页"><span class="avatar avatar--sm" aria-hidden="true">笛</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="chat-layout">
+
+  <!-- ============================================================
+       左：会话列表
+       ============================================================ -->
+  <section class="chat-list" aria-label="会话列表">
+    <div class="chat-list__head">
+      <h1 class="chat-list__title">私信</h1>
+      <label for="chat-search" class="sr-only">搜索会话</label>
+      <input id="chat-search" class="chat-list__search" type="search" placeholder="搜索会话...">
+    </div>
+
+    <div class="chat-list__body">
+
+      <!-- 当前会话 -->
+      <a href="message.html" class="chat-item chat-item--active" aria-current="true">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">
+          小
+          <span class="avatar__status" aria-label="在线"></span>
+        </span>
+        <span class="chat-item__body">
+          <span class="chat-item__top">
+            <span class="chat-item__name">小明</span>
+            <time class="chat-item__time" datetime="2026-09-30T21:45:00+08:00">21:45</time>
+          </span>
+          <span class="chat-item__preview">那篇 JMM 的文章写得真好</span>
+        </span>
+      </a>
+
+      <!-- 有未读 -->
+      <a href="message.html" class="chat-item chat-item--unread">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#FFE4E6; color:#BE123C;">
+          红
+          <span class="avatar__status" aria-label="在线"></span>
+        </span>
+        <span class="chat-item__body">
+          <span class="chat-item__top">
+            <span class="chat-item__name">红姐的技术笔记</span>
+            <time class="chat-item__time" datetime="2026-09-30T20:12:00+08:00">20:12</time>
+          </span>
+          <span class="chat-item__preview">明天一起讨论下 Redis 的缓存穿透方案？</span>
+        </span>
+        <span class="chat-item__badge" aria-label="2 条未读">2</span>
+      </a>
+
+      <!-- 离线用户 -->
+      <a href="message.html" class="chat-item">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#F5F0E6; color:#854D0E;">
+          R
+          <span class="avatar__status avatar__status--offline" aria-label="离线"></span>
+        </span>
+        <span class="chat-item__body">
+          <span class="chat-item__top">
+            <span class="chat-item__name">Redis 玩家</span>
+            <time class="chat-item__time" datetime="2026-09-30T18:30:00+08:00">18:30</time>
+          </span>
+          <span class="chat-item__preview">好的，我把代码整理一下发你</span>
+        </span>
+      </a>
+
+      <!-- 有未读 -->
+      <a href="message.html" class="chat-item chat-item--unread">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#FFEDD5; color:#C2410C;">阿</span>
+        <span class="chat-item__body">
+          <span class="chat-item__top">
+            <span class="chat-item__name">阿杰</span>
+            <time class="chat-item__time" datetime="2026-09-29T22:15:00+08:00">昨天</time>
+          </span>
+          <span class="chat-item__preview">面试那道题我后来想明白了</span>
+        </span>
+        <span class="chat-item__badge" aria-label="1 条未读">1</span>
+      </a>
+
+      <a href="message.html" class="chat-item">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#FEF9C3; color:#A16207;">J</span>
+        <span class="chat-item__body">
+          <span class="chat-item__top">
+            <span class="chat-item__name">JVM 调优笔记</span>
+            <time class="chat-item__time" datetime="2026-09-29T15:40:00+08:00">昨天</time>
+          </span>
+          <span class="chat-item__preview">嗯，一起加油！</span>
+        </span>
+      </a>
+
+      <a href="message.html" class="chat-item">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#FFE4E6; color:#BE123C;">算</span>
+        <span class="chat-item__body">
+          <span class="chat-item__top">
+            <span class="chat-item__name">算法小王子</span>
+            <time class="chat-item__time" datetime="2026-09-28T10:20:00+08:00">9月28日</time>
+          </span>
+          <span class="chat-item__preview">二分的边界确实容易写错</span>
+        </span>
+      </a>
+
+      <a href="message.html" class="chat-item">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">架</span>
+        <span class="chat-item__body">
+          <span class="chat-item__top">
+            <span class="chat-item__name">架构师老王</span>
+            <time class="chat-item__time" datetime="2026-09-27T09:00:00+08:00">9月27日</time>
+          </span>
+          <span class="chat-item__preview">推拉模式那张图你可以直接拿去用</span>
+        </span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       右：对话窗口
+       ============================================================ -->
+  <section class="chat-window" aria-label="与 小明的对话">
+
+    <!-- 会话头部 -->
+    <div class="chat-window__head">
+      <a href="profile.html">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">
+          小
+          <span class="avatar__status" aria-label="在线"></span>
+        </span>
+      </a>
+      <div class="chat-window__title">
+        <div class="chat-window__name">小明</div>
+        <div class="chat-window__status" role="status">
+          <span class="chat-window__status-dot" aria-hidden="true"></span>
+          在线
+        </div>
+      </div>
+      <button class="btn btn--icon btn--ghost" aria-label="会话设置">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- 消息区 -->
+    <div class="chat-window__body" id="chat-body" role="log" aria-live="polite" aria-label="消息记录">
+
+      <div class="chat-divider">今天</div>
+
+      <!-- 对方消息 -->
+      <div class="msg msg--in">
+        <span class="avatar avatar--sm" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>
+        <div>
+          <div class="msg__bubble">
+            你好！看到你写的 JMM 那篇帖子了，写得真清楚。
+          </div>
+          <div class="msg__meta">21:32</div>
+        </div>
+      </div>
+
+      <div class="msg msg--in">
+        <span class="avatar avatar--sm" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>
+        <div>
+          <div class="msg__bubble">
+            想请教一个问题：volatile 修饰数组的时候，数组元素的可见性是怎么保证的？
+          </div>
+          <div class="msg__meta">21:33</div>
+        </div>
+      </div>
+
+      <!-- 自己消息 -->
+      <div class="msg msg--out">
+        <span class="avatar avatar--sm" aria-hidden="true">笛</span>
+        <div>
+          <div class="msg__bubble">
+            好问题。volatile 修饰的是数组引用，不是数组元素。
+          </div>
+          <div class="msg__meta">
+            <span class="msg__status" aria-label="已读">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>
+              </svg>
+            </span>
+            21:35
+          </div>
+        </div>
+      </div>
+
+      <div class="msg msg--out">
+        <span class="avatar avatar--sm" aria-hidden="true">笛</span>
+        <div>
+          <div class="msg__bubble">
+            所以 volatile int[] arr，只能保证 arr 这个引用本身的可见性。<br>
+            arr[0] = 1 这种操作，还是需要别的同步手段。
+          </div>
+          <div class="msg__meta">
+            <span class="msg__status" aria-label="已读">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>
+              </svg>
+            </span>
+            21:36
+          </div>
+        </div>
+      </div>
+
+      <div class="msg msg--in">
+        <span class="avatar avatar--sm" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>
+        <div>
+          <div class="msg__bubble">
+            啊，原来如此！我一直以为数组元素也有可见性保证。
+          </div>
+          <div class="msg__meta">21:40</div>
+        </div>
+      </div>
+
+      <div class="msg msg--in">
+        <span class="avatar avatar--sm" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>
+        <div>
+          <div class="msg__bubble">
+            那 AtomicIntegerArray 这类原子数组是怎么实现的？
+          </div>
+          <div class="msg__meta">21:41</div>
+        </div>
+      </div>
+
+      <!-- 自己消息：发送中 -->
+      <div class="msg msg--out msg--sending">
+        <span class="avatar avatar--sm" aria-hidden="true">笛</span>
+        <div>
+          <div class="msg__bubble">
+            它内部用 Unsafe 的 CAS 操作，配合 volatile 语义的数组元素读写...
+          </div>
+          <div class="msg__meta">
+            <span class="msg__status" aria-label="发送中">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" stroke-dasharray="28" stroke-dashoffset="10"/>
+              </svg>
+            </span>
+            发送中
+          </div>
+        </div>
+      </div>
+
+      <!-- 自己消息：发送失败（可点击重发） -->
+      <div class="msg msg--out msg--failed">
+        <span class="avatar avatar--sm" aria-hidden="true">笛</span>
+        <div>
+          <div class="msg__bubble">
+            稍等，我把具体实现找出来发你
+          </div>
+          <div class="msg__meta">
+            <span class="msg__status msg__status--failed" role="alert">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+              </svg>
+              发送失败
+            </span>
+            <button style="color:var(--brand-600); font-weight:600; font-family:inherit; font-size:11px;">重发</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="msg msg--in">
+        <span class="avatar avatar--sm" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>
+        <div>
+          <div class="msg__bubble">不急，等你整理好。那篇帖子我真的反复看了好几遍 👍</div>
+          <div class="msg__meta">21:45</div>
+        </div>
+      </div>
+
+      <!-- 对方正在输入 -->
+      <div class="msg msg--in" id="typing-indicator" style="display:none;">
+        <span class="avatar avatar--sm" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>
+        <div class="msg__bubble">
+          <span class="typing" aria-label="对方正在输入">
+            <span class="typing__dot"></span>
+            <span class="typing__dot"></span>
+            <span class="typing__dot"></span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 输入区 -->
+    <div class="chat-window__footer">
+      <button class="btn btn--icon btn--ghost" aria-label="发送图片">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>
+        </svg>
+      </button>
+
+      <label for="chat-input" class="sr-only">输入消息</label>
+      <textarea id="chat-input" class="chat-window__input" rows="1"
+                placeholder="输入消息，按 Enter 发送..."></textarea>
+
+      <button id="chat-send" class="btn btn--primary btn--icon" aria-label="发送消息" disabled style="width:40px; height:40px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>
+        </svg>
+      </button>
+    </div>
+
+  </section>
+
+</div>
+
+<script src="assets/js/app.js"></script>
+<script>
+/* ---------------------------------------------------------------
+   私信交互
+   --------------------------------------------------------------- */
+(function () {
+  const input = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('chat-send');
+  const body = document.getElementById('chat-body');
+
+  /* 输入时：自适应高度 + 启用发送按钮 */
+  input.addEventListener('input', function () {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    sendBtn.disabled = !input.value.trim();
+  });
+
+  /* Enter 发送，Shift+Enter 换行 */
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!sendBtn.disabled) send();
+    }
+  });
+
+  sendBtn.addEventListener('click', send);
+
+  function send() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    // 生成 clientMsgId（按设计文档，用于服务端幂等去重）
+    const clientMsgId = 'c-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+
+    // 1. 立即渲染「发送中」气泡（乐观更新）
+    const el = appendMessage(text, clientMsgId);
+
+    // 2. 清空输入框
+    input.value = '';
+    input.style.height = 'auto';
+    sendBtn.disabled = true;
+
+    // 3. 模拟发送。接入后端时替换为：
+    //    DevCircle.WsClient.send({ type: 'MSG_SEND', data: { conversationId, content: text, clientMsgId } });
+    //    然后在 onMessage 里处理 MSG_ACK / 发送失败
+    setTimeout(function () {
+      // 演示：5% 概率模拟失败（触发三态中的「失败」态）
+      if (Math.random() < 0.05) {
+        el.classList.remove('msg--sending');
+        el.classList.add('msg--failed');
+        const status = el.querySelector('.msg__status');
+        status.className = 'msg__status msg__status--failed';
+        status.setAttribute('role', 'alert');
+        status.innerHTML =
+          '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+          '<circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>发送失败';
+        const meta = el.querySelector('.msg__meta');
+        const retry = document.createElement('button');
+        retry.textContent = '重发';
+        retry.style.cssText = 'color:var(--brand-600); font-weight:600; font-family:inherit; font-size:11px;';
+        retry.addEventListener('click', function () {
+          el.classList.remove('msg--failed');
+          el.classList.add('msg--sending');
+          status.className = 'msg__status';
+          status.removeAttribute('role');
+          retry.remove();
+          // 重发逻辑：同样的 clientMsgId，服务端幂等处理
+          setTimeout(function () {
+            el.classList.remove('msg--sending');
+            status.innerHTML =
+              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
+              '<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg>';
+          }, 600);
+        });
+        meta.appendChild(retry);
+      } else {
+        // 成功：撤销「发送中」态，显示已读双勾
+        el.classList.remove('msg--sending');
+        const status = el.querySelector('.msg__status');
+        status.innerHTML =
+          '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
+          '<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg>';
+      }
+    }, 550);
+
+    // 4. 滚动到底部
+    scrollToBottom();
+
+    // 5. 模拟对方回复（演示实时接收）
+    scheduleTyping();
+  }
+
+  /* 追加一条自己的消息 */
+  function appendMessage(text, clientMsgId) {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg msg--out msg--sending';
+    wrap.dataset.clientMsgId = clientMsgId;
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+
+    wrap.innerHTML =
+      '<span class="avatar avatar--sm" aria-hidden="true">笛</span>' +
+      '<div>' +
+        '<div class="msg__bubble"></div>' +
+        '<div class="msg__meta">' +
+          '<span class="msg__status" aria-label="发送中">' +
+            '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+            '<circle cx="12" cy="12" r="9" stroke-dasharray="28" stroke-dashoffset="10"/></svg>' +
+          '</span>' +
+          hh + ':' + mm +
+        '</div>' +
+      '</div>';
+
+    // 用 textContent 防 XSS（对应设计文档的 XSS 防护）
+    wrap.querySelector('.msg__bubble').textContent = text;
+    body.appendChild(wrap);
+    return wrap;
+  }
+
+  /* 滚动到底部 */
+  function scrollToBottom() {
+    body.scrollTop = body.scrollHeight;
+  }
+
+  /* 模拟对方「正在输入」并回复 */
+  function scheduleTyping() {
+    const typing = document.getElementById('typing-indicator');
+    setTimeout(function () {
+      typing.style.display = 'flex';
+      scrollToBottom();
+
+      setTimeout(function () {
+        typing.style.display = 'none';
+
+        const replies = [
+          '明白了，谢谢！',
+          '好的，我试试看',
+          '原来是这样，之前理解错了',
+          '这个思路很清晰 👍'
+        ];
+        const wrap = document.createElement('div');
+        wrap.className = 'msg msg--in';
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+
+        wrap.innerHTML =
+          '<span class="avatar avatar--sm" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>' +
+          '<div>' +
+            '<div class="msg__bubble"></div>' +
+            '<div class="msg__meta">' + hh + ':' + mm + '</div>' +
+          '</div>';
+        wrap.querySelector('.msg__bubble').textContent =
+          replies[Math.floor(Math.random() * replies.length)];
+
+        body.appendChild(wrap);
+        scrollToBottom();
+      }, 1800);
+    }, 1200);
+  }
+
+  /* 初始滚动到底部 */
+  scrollToBottom();
+})();
+</script>
+
+</body>
+</html>

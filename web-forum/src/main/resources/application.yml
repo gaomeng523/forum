@@ -1,0 +1,134 @@
+# ============================================================
+# DevCircle 计算机专业论坛系统 · 主配置
+# ------------------------------------------------------------
+# 这里只放「与环境无关」的配置。
+# 环境差异（数据库地址、日志级别、连接池…）拆到：
+#   application-dev.yml    本地开发
+#   application-prod.yml   生产部署
+#
+# 激活哪个环境看最下面的 spring.profiles.active；
+# 部署时用命令行覆盖，不改文件：
+#   java -jar dev-circle.jar --spring.profiles.active=prod
+#
+# 关联文档：docs/02-系统设计/系统架构设计说明书.md（部署架构）
+#          docs/04-工程搭建/阶段四落地指引.md（本地起步）
+# ============================================================
+
+server:
+  # 本地也是 8080；部署时用环境变量覆盖，不用改代码
+  port: ${SERVER_PORT:8080}
+  # 优雅停机：收到 SIGTERM 后先处理完在用请求再退出（一期单机，主要是为了 drain WebSocket 连接）
+  shutdown: graceful
+  tomcat:
+    # 让 Tomcat 在表单里正确解析 UTF-8 的 POST body
+    uri-encoding: UTF-8
+
+spring:
+  application:
+    name: dev-circle
+
+  profiles:
+    # 默认激活 dev。这是刻意的：本地随便跑都是开发配置，不会误连生产库
+    active: dev
+
+  lifecycle:
+    # 配合上面的 shutdown: graceful，给在途请求 20 秒收尾时间
+    timeout-per-shutdown-phase: 20s
+
+  # ------------------------------------------------------------
+  # 模板引擎：Thymeleaf 服务端渲染
+  # 刻意不引入 SPA 框架（React/Vue），理由见 ADR-001
+  # ------------------------------------------------------------
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    # 生产默认开缓存；application-dev.yml 里覆盖成 false
+    cache: true
+
+  # ------------------------------------------------------------
+  # JSON 序列化
+  # ------------------------------------------------------------
+  jackson:
+    # 时间统一按东八区输出，避免与数据库会话时区不一致导致差 8 小时
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 值为 null 的字段不输出，能明显减小响应体（前端对缺字段做兜底）
+    default-property-inclusion: non_null
+    serialization:
+      # LocalDateTime 输出成 "2026-10-01 14:30:00" 这种可读字符串，
+      # 而不是 [2026,10,1,14,30,0] 这种数组
+      write-dates-as-timestamps: false
+      # 序列化空 Bean 时不抛异常（有些 VO 可能全是 null）
+      fail-on-empty-beans: false
+
+  # ------------------------------------------------------------
+  # 文件上传
+  # ------------------------------------------------------------
+  servlet:
+    multipart:
+      enabled: true
+      # 单张图片上限，对应 post_image 表存的九宫格
+      max-file-size: 5MB
+      # 一次请求上限，留出「九宫格一次传 9 张」的余量
+      max-request-size: 20MB
+
+# ============================================================
+# MyBatis-Plus
+# ============================================================
+mybatis-plus:
+  # XML 映射文件位置。约定：一个 Mapper 接口配一个同名 XML
+  mapper-locations: classpath*:/mapper/**/*.xml
+  # 实体类别名包，XML 里可以直接写类名，不用写全限定名
+  # ⚠️ 这个包目前还不存在（实体类由你自己写），MyBatis-Plus 扫不到只会警告，不会启动失败
+  type-aliases-package: com.devcircle.entity
+
+  configuration:
+    # 数据库 snake_case 列名 → Java camelCase 字段名
+    # 开了这个就不用给每个字段写 @TableField("xxx_yyy")
+    map-underscore-to-camel-case: true
+    # 查询结果为 null 的列也调用 setter，配合 Lombok @Data 更安全
+    call-setters-on-nulls: true
+    # 一级缓存作用域，SESSION 是官方默认值，这里显式写出来便于以后讨论
+    local-cache-scope: session
+
+  global-config:
+    # 关掉启动时打印的 MyBatis-Plus banner，日志干净些
+    banner: false
+    db-config:
+      # 主键策略：跟随数据库自增（DDL 里 13 张表都是 AUTO_INCREMENT）
+      id-type: auto
+      # ------------------------------------------------------------
+      # 逻辑删除三件套，对应所有表都有的 is_deleted 字段
+      # logic-delete-field 填的是「实体类字段名」，不是列名。
+      # 实体的字段是 private Integer isDeleted;（列名 is_deleted）
+      # 配好这个之后，MyBatis-Plus 的 deleteById 会自动变成
+      # UPDATE ... SET is_deleted = 1，而 selectXxx 会自动追加
+      # WHERE is_deleted = 0，业务代码里完全不用手写。
+      # ------------------------------------------------------------
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# ============================================================
+# 项目自定义配置（统一用 devcircle 前缀，避免和框架配置混在一起）
+# 对应代码里的 @ConfigurationProperties(prefix = "devcircle.xxx")
+# ============================================================
+devcircle:
+  jwt:
+    # ⚠️ 生产环境必须用环境变量 JWT_SECRET 覆盖这个默认值，绝不能用它上线。
+    # 长度要求：HS256 算法的密钥至少要 256 bit（32 字节），这串是 50 字节，够用。
+    secret: ${JWT_SECRET:dev-circle-local-only-secret-key-change-me-32bytes}
+    # token 有效期，单位毫秒 —— 这里 604800000 = 7 天
+    expire: 604800000
+    # token 放在哪个请求头、用什么前缀。最终形如：
+    #   Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+    header: Authorization
+    prefix: "Bearer "
+
+  upload:
+    # 本地存储根目录（相对应用工作目录）。部署时可指向独立数据盘
+    root: ${UPLOAD_ROOT:./uploads}
+    # 对外访问前缀，要和 WebMvcConfig 里 addResourceHandlers 注册的路径一致
+    url-prefix: /uploads/

@@ -1,0 +1,85 @@
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # characterEncoding 同样必须是 UTF-8（Java 字符集名），原因见 application-dev.yml
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      pool-name: DevCircleHikariPool
+      # 单机部署下的保守值。8 核 16G 之类可按 10~15 上调
+      minimum-idle: 10
+      maximum-pool-size: 30
+      idle-timeout: 600000          # 10 分钟
+      max-lifetime: 1800000         # 30 分钟，必须小于 MySQL 的 wait_timeout
+      connection-timeout: 5000
+      connection-test-query: SELECT 1
+      # 连接泄漏检测：借出超过 60 秒未归还就打印堆栈。
+      # 打开它有个前提 —— max-lifetime 要大于这个值，否则正常长事务也会被误报
+      leak-detection-threshold: 60000
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      database: 0
+      password: ${REDIS_PASSWORD}
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 50
+          max-idle: 20
+          min-idle: 10
+          max-wait: 3000ms
+
+  thymeleaf:
+    # 生产必须开缓存，否则每次请求都重新解析模板
+    cache: true
+
+  # 生产环境关闭 /error 的详细堆栈，不要把内部信息透给前端
+  web:
+    error:
+      include-stacktrace: never
+      include-message: never
+      include-binding-errors: never
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
+# ============================================================
+# 生产日志：落文件 + 滚动，控制台只留 ERROR
+# ============================================================
+logging:
+  level:
+    root: warn
+    com.devcircle: info
+    # 把 Spring 启动期的 INFO 噪音压掉
+    org.springframework.boot.web.embedded: warn
+  file:
+    # 日志目录，部署时指向数据盘（如 /data/devcircle/logs）
+    name: ${LOG_PATH:./logs}/dev-circle.log
+  logback:
+    rollingpolicy:
+      # 单文件 100MB，保留 30 天，总量封顶 3GB
+      max-file-size: 100MB
+      max-history: 30
+      total-size-cap: 3GB
+  pattern:
+    # 文件里带上完整时间戳和线程名，方便事后排查并发问题
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+    console: "%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
+
+server:
+  tomcat:
+    # 生产环境调大工作线程数；具体值要结合压测结果定，这里给个起点
+    threads:
+      max: 200
+      min-spare: 20
+    # POST 表单最大尺寸，与 multipart 的 max-request-size 保持一致
+    max-http-form-post-size: 20MB
+  # 生产环境不暴露 /error 的详细信息，配合上面的 spring.web.error.*
+  error:
+    whitelabel:
+      enabled: false

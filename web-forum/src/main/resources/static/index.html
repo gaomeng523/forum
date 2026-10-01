@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>首页 · DevCircle</title>
+<meta name="description" content="DevCircle 计算机专业技术社区 —— 分享你的技术心得">
+<link rel="stylesheet" href="assets/css/design-system.css">
+<!-- 渐进增强：字体加载失败不影响布局 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<a href="#main" class="skip-link">跳到主内容</a>
+
+<!-- ============================================================
+     顶部导航
+     ============================================================ -->
+<header class="header">
+  <div class="header__inner">
+
+    <a href="index.html" class="logo" aria-label="DevCircle 首页">
+      <span class="logo__mark" aria-hidden="true">&lt;/&gt;</span>
+      <span class="logo__text">DevCircle</span>
+    </a>
+
+    <form class="search" role="search" action="post-search.html" method="get">
+      <label for="search-input" class="sr-only">搜索帖子、用户或标签</label>
+      <svg class="search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+      </svg>
+      <input id="search-input" name="q" class="search__input" type="search"
+             placeholder="搜索帖子、用户或 #标签#">
+    </form>
+
+    <div class="header__actions">
+
+      <a href="index.html" class="btn btn--primary btn--sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        发帖
+      </a>
+
+      <a href="notification.html" class="btn btn--icon btn--ghost" aria-label="消息通知">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+        </svg>
+        <span id="notify-badge" class="badge-dot" aria-label="12 条未读通知">12</span>
+      </a>
+
+      <a href="message.html" class="btn btn--icon btn--ghost" aria-label="私信">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </a>
+
+      <a href="profile.html" aria-label="我的主页">
+        <span class="avatar avatar--sm" aria-hidden="true">
+          笛
+        </span>
+      </a>
+
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     三栏布局
+     ============================================================ -->
+<div class="layout">
+
+  <!-- ---------- 左侧导航 ---------- -->
+  <nav class="layout__sidebar" aria-label="主导航">
+    <ul class="nav">
+      <li>
+        <a href="index.html" class="nav__item nav__item--active" data-label="首页" aria-current="page">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>
+          </svg>
+          <span class="nav__label">首页</span>
+        </a>
+      </li>
+      <li>
+        <a href="discover.html" class="nav__item" data-label="发现">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2 6.3-6.4 2.1 2-6.3z"/>
+          </svg>
+          <span class="nav__label">发现</span>
+        </a>
+      </li>
+      <li>
+        <a href="hot.html" class="nav__item" data-label="热搜榜">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </svg>
+          <span class="nav__label">热搜榜</span>
+        </a>
+      </li>
+      <li>
+        <a href="message.html" class="nav__item" data-label="私信">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="nav__label">私信</span>
+          <span class="nav__count" aria-label="2 条未读">2</span>
+        </a>
+      </li>
+      <li>
+        <a href="notification.html" class="nav__item" data-label="通知">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+          </svg>
+          <span class="nav__label">通知</span>
+          <span class="nav__count" aria-label="12 条未读">12</span>
+        </a>
+      </li>
+      <li>
+        <a href="profile.html" class="nav__item" data-label="我的主页">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="nav__label">我的主页</span>
+        </a>
+      </li>
+      <li>
+        <a href="bookmarks.html" class="nav__item" data-label="我的收藏">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="nav__label">我的收藏</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav__divider" role="separator"></div>
+
+    <ul class="nav">
+      <li>
+        <a href="settings.html" class="nav__item" data-label="设置">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          <span class="nav__label">设置</span>
+        </a>
+      </li>
+      <li>
+        <a href="login.html" class="nav__item" data-label="退出登录">
+          <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/>
+          </svg>
+          <span class="nav__label">退出登录</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- 当前登录用户 -->
+    <a href="profile.html" class="user-chip">
+      <span class="avatar avatar--md" aria-hidden="true">笛</span>
+      <span class="flex-1" style="min-width:0">
+        <span class="user-chip__name">笛卡尔的心跳</span>
+        <span class="user-chip__handle">@yevora</span>
+      </span>
+    </a>
+  </nav>
+
+  <!-- ---------- 主内容 ---------- -->
+  <main class="layout__main" id="main">
+
+    <!-- 发帖框 -->
+    <section class="composer" aria-label="发布新帖子">
+      <span class="avatar avatar--md" aria-hidden="true">笛</span>
+      <div class="composer__body">
+        <label for="composer-input" class="sr-only">分享你的技术心得</label>
+        <textarea id="composer-input" class="composer__input"
+                  placeholder="分享你的技术心得、踩坑记录或学习笔记..." rows="1"></textarea>
+
+        <div class="composer__toolbar">
+          <div class="composer__tools">
+            <button type="button" class="tool" aria-label="添加图片">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>
+              </svg>
+            </button>
+            <button type="button" class="tool" aria-label="添加代码块">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/>
+              </svg>
+            </button>
+            <button type="button" class="tool" aria-label="添加标签">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 2H2v10l9.3 9.3a2 2 0 0 0 2.8 0l7.2-7.2a2 2 0 0 0 0-2.8z"/><circle cx="7" cy="7" r="1.5"/>
+              </svg>
+            </button>
+          </div>
+
+          <span id="composer-counter" class="counter" aria-live="polite">0 / 500</span>
+
+          <button type="button" id="composer-submit" class="btn btn--primary btn--sm" disabled>
+            发布
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 信息流 Tab -->
+    <div class="tabs" role="tablist" aria-label="信息流切换">
+      <button class="tab tab--active" role="tab" aria-selected="true" aria-controls="feed">关注</button>
+      <button class="tab" role="tab" aria-selected="false">推荐</button>
+      <button class="tab" role="tab" aria-selected="false">最新</button>
+    </div>
+
+    <!-- 帖子列表 -->
+    <div id="feed" role="feed" aria-label="帖子信息流" style="background:var(--bg-card); border:1px solid var(--border-1); border-top:none; border-radius:0 0 var(--r-lg) var(--r-lg); overflow:hidden;">
+
+      <!-- ========== 帖子 1：纯文本 + 标签 ========== -->
+      <article class="post">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">小</span>
+        <div class="post__body">
+          <div class="post__head">
+            <a href="profile.html" class="post__author">小明
+              <svg class="post__verified" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-label="认证用户" role="img">
+                <path d="M12 2 9.5 4.5 6 4l-.5 3.5L2 9l1.5 3L2 15l3.5 1.5L6 20l3.5-.5L12 22l2.5-2.5L18 20l.5-3.5L22 15l-1.5-3L22 9l-3.5-1.5L18 4l-3.5.5zm-1.2 13.2L7 11.4l1.4-1.4 2.4 2.4 5-5L17.2 9z"/>
+              </svg>
+            </a>
+            <span class="post__meta">
+              <span>·</span>
+              <time datetime="2026-09-30T21:30:00+08:00">3 分钟前</time>
+              <span class="post__meta-sep">·</span>
+              <span class="post__direction">Java 后端</span>
+            </span>
+            <button class="post__more" aria-label="更多操作">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="post__content">终于把 JMM 的内存可见性彻底搞懂了。踩坑记录：<br>volatile 只保证可见性和禁止指令重排，不保证原子性。想用它做自增计数器，照样会出错。</div>
+
+          <div class="tag-suggest">
+            <a href="tag.html" class="tag-pill">#Java#</a>
+            <a href="tag.html" class="tag-pill">#并发编程#</a>
+            <a href="tag.html" class="tag-pill">#JMM#</a>
+          </div>
+
+          <div class="actions">
+            <button class="action action--like" data-count="42" aria-pressed="false" aria-label="赞">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+              </svg>
+              <span class="action__count">42</span>
+            </button>
+
+            <button class="action action--comment" aria-label="查看 8 条评论">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+              </svg>
+              <span class="action__count">8</span>
+            </button>
+
+            <button class="action action--repost" aria-label="转发">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+              </svg>
+              <span class="action__count">3</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 帖子 2：带图片九宫格 ========== -->
+      <article class="post">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#FFE4E6; color:#BE123C;">红</span>
+        <div class="post__body">
+          <div class="post__head">
+            <a href="profile.html" class="post__author">红姐的技术笔记</a>
+            <span class="post__meta">
+              <span>·</span>
+              <time datetime="2026-09-30T19:10:00+08:00">2 小时前</time>
+              <span class="post__meta-sep">·</span>
+              <span class="post__direction">前端</span>
+            </span>
+            <button class="post__more" aria-label="更多操作">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="post__content">周末把 CSS Grid 的响应式布局重新梳理了一遍，整理了三种常用模式。滑动窗口限流那张图是给后端同学画的，顺手一起放了。</div>
+
+          <!-- 九宫格：4 张 -> 两列 -->
+          <div class="post__images">
+            <div class="post__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect fill='%23FEF3C7' width='400' height='400'/%3E%3Ctext x='200' y='200' font-family='monospace' font-size='28' fill='%23B45309' text-anchor='middle' dominant-baseline='middle'%3Egrid-01%3C/text%3E%3C/svg%3E"
+                   alt="CSS Grid 布局示意图一" loading="lazy" width="400" height="400">
+            </div>
+            <div class="post__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect fill='%23FFEDD5' width='400' height='400'/%3E%3Ctext x='200' y='200' font-family='monospace' font-size='28' fill='%23C2410C' text-anchor='middle' dominant-baseline='middle'%3Egrid-02%3C/text%3E%3C/svg%3E"
+                   alt="CSS Grid 布局示意图二" loading="lazy" width="400" height="400">
+            </div>
+            <div class="post__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect fill='%23F5F0E6' width='400' height='400'/%3E%3Ctext x='200' y='200' font-family='monospace' font-size='28' fill='%23854D0E' text-anchor='middle' dominant-baseline='middle'%3Egrid-03%3C/text%3E%3C/svg%3E"
+                   alt="CSS Grid 布局示意图三" loading="lazy" width="400" height="400">
+            </div>
+            <div class="post__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect fill='%23FFFBEB' width='400' height='400'/%3E%3Ctext x='200' y='200' font-family='monospace' font-size='28' fill='%23D97706' text-anchor='middle' dominant-baseline='middle'%3E限流算法%3C/text%3E%3C/svg%3E"
+                   alt="滑动窗口限流算法示意图" loading="lazy" width="400" height="400">
+            </div>
+          </div>
+
+          <div class="tag-suggest">
+            <a href="tag.html" class="tag-pill">#CSS#</a>
+            <a href="tag.html" class="tag-pill">#前端#</a>
+          </div>
+
+          <div class="actions">
+            <button class="action action--like action--active" data-count="156" aria-pressed="true" aria-label="取消赞">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+              </svg>
+              <span class="action__count">156</span>
+            </button>
+            <button class="action action--comment" aria-label="查看 23 条评论">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+              </svg>
+              <span class="action__count">23</span>
+            </button>
+            <button class="action action--repost" aria-label="转发">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+              </svg>
+              <span class="action__count">18</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 帖子 3：转发帖（两层折叠） ========== -->
+      <article class="post">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#FFEDD5; color:#C2410C;">阿</span>
+        <div class="post__body">
+          <div class="post__head">
+            <a href="profile.html" class="post__author">阿杰</a>
+            <span class="post__meta">
+              <span>·</span>
+              <time datetime="2026-09-30T15:20:00+08:00">6 小时前</time>
+              <span class="post__meta-sep">·</span>
+              <span class="post__direction">算法</span>
+            </span>
+            <button class="post__more" aria-label="更多操作">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="post__content">这个二分查找的边界处理总结得太到位了，收藏了。</div>
+
+          <!-- 转发原帖（浅灰底，只嵌一层） -->
+          <a href="post-detail.html" class="quote">
+            <div class="quote__author">
+              @算法小王子
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-label="认证用户" role="img">
+                <path d="M12 2 9.5 4.5 6 4l-.5 3.5L2 9l1.5 3L2 15l3.5 1.5L6 20l3.5-.5L12 22l2.5-2.5L18 20l.5-3.5L22 15l-1.5-3L22 9l-3.5-1.5L18 4l-3.5.5zm-1.2 13.2L7 11.4l1.4-1.4 2.4 2.4 5-5L17.2 9z"/>
+              </svg>
+            </div>
+            <div class="quote__content">二分查找最坑的不是思路，是边界。记住一个原则：<br>while 里用 left &lt; right 还是 left &lt;= right，取决于你的 right 是开区间还是闭区间。<br><br>开区间 [left, right) → while (left &lt; right)，right = mid<br>闭区间 [left, right] → while (left &lt;= right)，right = mid - 1</div>
+            <div class="quote__folded">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M7 17 17 7M7 7h10v10"/>
+              </svg>
+              原帖还有 2 层转发，点击查看
+            </div>
+          </a>
+
+          <div class="actions">
+            <button class="action action--like" data-count="89" aria-pressed="false" aria-label="赞">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+              </svg>
+              <span class="action__count">89</span>
+            </button>
+            <button class="action action--comment" aria-label="查看 5 条评论">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+              </svg>
+              <span class="action__count">5</span>
+            </button>
+            <button class="action action--repost" aria-label="转发">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+              </svg>
+              <span class="action__count">12</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 帖子 4：代码分享 ========== -->
+      <article class="post">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#F5F0E6; color:#854D0E;">R</span>
+        <div class="post__body">
+          <div class="post__head">
+            <a href="profile.html" class="post__author">Redis 玩家</a>
+            <span class="post__meta">
+              <span>·</span>
+              <time datetime="2026-09-29T22:00:00+08:00">昨天</time>
+              <span class="post__meta-sep">·</span>
+              <span class="post__direction">后端</span>
+            </span>
+            <button class="post__more" aria-label="更多操作">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="post__content">点赞用 Lua 脚本保证原子性，这个思路真的优雅。分两条命令发的话，并发下必然重复计数。</div>
+
+          <div class="tag-suggest">
+            <a href="tag.html" class="tag-pill">#Redis#</a>
+            <a href="tag.html" class="tag-pill">#Lua#</a>
+            <a href="tag.html" class="tag-pill">#高并发#</a>
+          </div>
+
+          <div class="actions">
+            <button class="action action--like" data-count="231" aria-pressed="false" aria-label="赞">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+              </svg>
+              <span class="action__count">231</span>
+            </button>
+            <button class="action action--comment" aria-label="查看 41 条评论">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+              </svg>
+              <span class="action__count">41</span>
+            </button>
+            <button class="action action--repost" aria-label="转发">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+              </svg>
+              <span class="action__count">67</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 帖子 5：单张大图 ========== -->
+      <article class="post">
+        <span class="avatar avatar--md" aria-hidden="true" style="background:#FEF3C7; color:#B45309;">架</span>
+        <div class="post__body">
+          <div class="post__head">
+            <a href="profile.html" class="post__author">架构师老王</a>
+            <span class="post__meta">
+              <span>·</span>
+              <time datetime="2026-09-29T14:30:00+08:00">昨天</time>
+              <span class="post__meta-sep">·</span>
+              <span class="post__direction">后端架构</span>
+            </span>
+            <button class="post__more" aria-label="更多操作">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="post__content">画了张信息流系统的推拉模式对比图。核心结论：粉丝少用拉、粉丝多用推，混合模式才是生产环境的答案。</div>
+
+          <div class="post__images">
+            <div class="post__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='840' height='420'%3E%3Crect fill='%23EEF2FF' width='840' height='420'/%3E%3Ctext x='420' y='210' font-family='monospace' font-size='36' fill='%234F46E5' text-anchor='middle' dominant-baseline='middle'%3E推模式 vs 拉模式%3C/text%3E%3C/svg%3E"
+                   alt="信息流推拉模式对比架构图" loading="lazy" width="840" height="420">
+            </div>
+          </div>
+
+          <div class="tag-suggest">
+            <a href="tag.html" class="tag-pill">#系统设计#</a>
+            <a href="tag.html" class="tag-pill">#信息流#</a>
+          </div>
+
+          <div class="actions">
+            <button class="action action--like" data-count="512" aria-pressed="false" aria-label="赞">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>
+              </svg>
+              <span class="action__count">512</span>
+            </button>
+            <button class="action action--comment" aria-label="查看 76 条评论">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>
+              </svg>
+              <span class="action__count">76</span>
+            </button>
+            <button class="action action--repost" aria-label="转发">
+              <svg class="action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+              </svg>
+              <span class="action__count">203</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+    <!-- /feed -->
+
+    <!-- 加载更多 -->
+    <div class="load-more">
+      <button id="load-more" class="load-more__btn" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 5v14M19 12l-7 7-7-7"/>
+        </svg>
+        加载更多
+      </button>
+    </div>
+
+  </main>
+
+  <!-- ---------- 右侧栏 ---------- -->
+  <aside class="layout__aside" aria-label="辅助信息">
+
+    <!-- 热搜榜 -->
+    <section class="aside-card">
+      <div class="aside-card__head">
+        <h2 class="aside-card__title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--like)" aria-hidden="true">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </svg>
+          技术热搜
+        </h2>
+        <a href="hot.html" class="text-xs">全部</a>
+      </div>
+      <div class="aside-card__body">
+        <a href="tag.html" class="trend">
+          <span class="trend__rank" aria-hidden="true">1</span>
+          <span class="trend__body">
+            <span class="trend__name">#Java 并发编程#</span>
+            <span class="trend__count">2.4 万讨论</span>
+          </span>
+        </a>
+        <a href="tag.html" class="trend">
+          <span class="trend__rank" aria-hidden="true">2</span>
+          <span class="trend__body">
+            <span class="trend__name">#Redis 缓存设计#</span>
+            <span class="trend__count">1.8 万讨论</span>
+          </span>
+        </a>
+        <a href="tag.html" class="trend">
+          <span class="trend__rank" aria-hidden="true">3</span>
+          <span class="trend__body">
+            <span class="trend__name">#Spring Boot 3#</span>
+            <span class="trend__count">1.5 万讨论</span>
+          </span>
+        </a>
+        <a href="tag.html" class="trend">
+          <span class="trend__rank" aria-hidden="true">4</span>
+          <span class="trend__body">
+            <span class="trend__name">#WebSocket 实时通信#</span>
+            <span class="trend__count">9876 讨论</span>
+          </span>
+        </a>
+        <a href="tag.html" class="trend">
+          <span class="trend__rank" aria-hidden="true">5</span>
+          <span class="trend__body">
+            <span class="trend__name">#MySQL 索引优化#</span>
+            <span class="trend__count">8234 讨论</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 推荐关注 -->
+    <section class="aside-card">
+      <div class="aside-card__head">
+        <h2 class="aside-card__title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-600)" aria-hidden="true">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          推荐关注
+        </h2>
+      </div>
+      <div class="aside-card__body">
+        <div class="suggest">
+          <span class="avatar avatar--md" aria-hidden="true" style="background:#F5F0E6; color:#854D0E;">R</span>
+          <span class="suggest__body">
+            <span class="suggest__name">Redis 玩家</span>
+            <span class="suggest__bio">缓存设计与高并发实战</span>
+          </span>
+          <button class="btn btn--primary btn--sm" data-follow="0">关注</button>
+        </div>
+        <div class="suggest">
+          <span class="avatar avatar--md" aria-hidden="true" style="background:#FEF9C3; color:#A16207;">J</span>
+          <span class="suggest__body">
+            <span class="suggest__name">JVM 调优笔记</span>
+            <span class="suggest__bio">Java 虚拟机原理与实战</span>
+          </span>
+          <button class="btn btn--primary btn--sm" data-follow="0">关注</button>
+        </div>
+        <div class="suggest">
+          <span class="avatar avatar--md" aria-hidden="true" style="background:#FFE4E6; color:#BE123C;">算</span>
+          <span class="suggest__body">
+            <span class="suggest__name">算法小王子</span>
+            <span class="suggest__bio">LeetCode 题解与思路总结</span>
+          </span>
+          <button class="btn btn--primary btn--sm" data-follow="0">关注</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 页脚 -->
+    <div class="text-xs text-muted" style="padding:0 4px; line-height:1.9;">
+      DevCircle · 计算机专业技术社区<br>
+      <a href="#" class="text-xs">关于我们</a> ·
+      <a href="#" class="text-xs">使用条款</a> ·
+      <a href="#" class="text-xs">隐私政策</a> ·
+      <a href="#" class="text-xs">帮助中心</a>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- 页脚（移动端显示） -->
+<footer style="display:none"></footer>
+
+<script src="assets/js/app.js"></script>
+<script>
+/* ---------------------------------------------------------------
+   页面级脚本：演示 WebSocket 消息接收（原型阶段用定时器模拟）
+   --------------------------------------------------------------- */
+(function () {
+  // 原型阶段：模拟服务端推送未读通知数变化
+  // 接入后端时替换为：
+  //   DevCircle.WsClient.init('ws://localhost:8080/ws', token, function (msg) {
+  //     if (msg.type === 'NOTIFY_UNREAD') DevCircle.updateUnreadBadge(msg.data.total);
+  //   });
+  let unread = 12;
+  setInterval(function () {
+    // 低概率模拟收到新通知
+    if (Math.random() < 0.08) {
+      unread++;
+      DevCircle.updateUnreadBadge(unread);
+    }
+  }, 8000);
+})();
+</script>
+
+</body>
+</html>
